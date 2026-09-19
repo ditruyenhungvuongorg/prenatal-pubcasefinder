@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Prenatal · Đối chiếu kiểu hình tiền sản</title>
+<link rel="stylesheet" href="styles.css">
+<script defer src="config.js"></script><script defer src="app.js"></script>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="./"><span class="brand-icon">P</span><span>Prenatal<span class="brand-sub">PUBCASEFINDER WORKSPACE</span></span></a><div class="top-actions"><span id="connection" role="status">Đang kết nối…</span><button id="settings-open" class="quiet">Kết nối</button><button id="new-case" class="quiet">Ca mới</button></div></header>
+<main>
+<div class="intro"><div><p class="eyebrow">KHÔNG GIAN LÀM VIỆC CỦA BÁC SĨ</p><h1>Từ dấu hiệu đến hướng khảo sát.</h1><p>Duyệt kiểu hình, đối chiếu bệnh hiếm và chuẩn bị phiếu hội chẩn di truyền.</p></div><button id="export" disabled>Xuất phiếu Lab ↗</button></div>
+<div class="steps"><span><b>01</b> Nhập dấu hiệu</span><span><b>02</b> Duyệt HPO</span><span><b>03</b> Đối chiếu & hội chẩn</span></div>
+<p id="notice" role="status" aria-live="polite" class="notice" hidden></p>
+<div class="workspace">
+<aside>
+<section class="panel"><div class="section-heading"><h2>Thông tin ca thai</h2><span class="subtle">Giữ trong phiên này</span></div><div class="fields"><label>Mã ca<input id="case-id" maxlength="80" placeholder="Ví dụ: TS-001"></label><label>Tuổi thai<input id="gestation" maxlength="40" placeholder="Ví dụ: 24 tuần 3 ngày"></label></div><label>Bác sĩ phụ trách<input id="doctor" maxlength="100" placeholder="Họ tên bác sĩ"></label></section>
+<section class="panel"><div class="section-heading"><h2>Nhập dấu hiệu</h2><span class="number">01</span></div>
+<div class="tabs" role="tablist" aria-label="Cách nhập dấu hiệu"><button role="tab" id="tab-search" aria-selected="true" aria-controls="manual">Tìm từng HPO</button><button role="tab" id="tab-text" aria-selected="false" aria-controls="paragraph">Nhập đoạn văn</button></div>
+<div id="manual" role="tabpanel" aria-labelledby="tab-search"><label for="query">Tên dấu hiệu hoặc mã HPO</label><input id="query" type="search" autocomplete="off" placeholder="đầu nhỏ, Microcephaly, HP:0000252"><p class="hint">Tìm tiếng Việt có/không dấu, tiếng Anh hoặc mã HPO.</p><div id="search-results" class="search-results"></div></div>
+<div id="paragraph" role="tabpanel" aria-labelledby="tab-text" hidden><label for="clinical-text">Mô tả siêu âm</label><textarea id="clinical-text" rows="6" maxlength="6000" placeholder="Dán đoạn mô tả siêu âm để nhận diện các cụm dấu hiệu…"></textarea><p class="hint">Model trích cụm nguyên văn; bác sĩ chọn HPO tương ứng trước khi đối chiếu.</p><button id="extract" class="full">Tách dấu hiệu từ văn bản</button><div id="mentions"></div></div>
+</section>
+<section class="panel"><div class="section-heading"><h2>HPO của ca <span id="hpo-count" class="count">0</span></h2><button id="clear-hpos" class="text-button">Xóa danh sách</button></div><p class="hint">Xác nhận trạng thái cho từng dấu hiệu. Chưa nhắc đến không có nghĩa là không có.</p><div id="selected"></div><label class="check"><input type="checkbox" id="reviewed"> Tôi đã duyệt mã HPO và trạng thái của ca này.</label><button id="match" class="full" disabled>Đối chiếu bệnh <span>→</span></button></section>
+</aside>
+<section class="results-area" aria-label="Kết quả đối chiếu">
+<div class="results-heading"><div><p class="eyebrow">ĐỐI CHIẾU KIỂU HÌNH</p><h2 id="results-title">Kết quả bệnh tiềm năng</h2></div><select id="inheritance-filter" aria-label="Lọc kiểu di truyền"><option value="">Tất cả kiểu di truyền</option></select></div>
+<p class="hint">Phần trăm thể hiện độ tương đồng kiểu hình theo IC, không phải xác suất mắc bệnh.</p>
+<div id="pattern" class="pattern" hidden></div><div id="results"><div class="empty"><div class="empty-symbol">⌕</div><h3>Bắt đầu từ dấu hiệu của ca thai</h3><p>Tìm HPO hoặc nhập mô tả siêu âm ở bên trái.<br>Kết quả sẽ xuất hiện sau khi bác sĩ duyệt danh sách.</p><div class="legend"><span class="pill blue">HPO khớp</span><span class="pill green">Kiểu di truyền</span><span class="pill gray">Gen liên quan</span></div></div></div>
+</section></div>
+<footer>Công cụ hỗ trợ nghiên cứu và hội chẩn · Bác sĩ xác nhận kết quả trước khi sử dụng · Không tự lưu hồ sơ ca trên trình duyệt.</footer>
+</main>
+<dialog id="settings"><form method="dialog"><div class="section-heading"><h2>Kết nối máy chủ</h2><button class="quiet" value="cancel">Đóng</button></div><label>Địa chỉ API HTTPS<input id="api-url" type="url" placeholder="https://may-chu.example"></label><label>Mã truy cập<input id="access-token" type="password" autocomplete="off"></label><p class="hint">Mã truy cập chỉ giữ trong bộ nhớ của tab này. Địa chỉ máy chủ có thể được lưu, không lưu nội dung ca.</p><button id="connect" value="default">Kết nối</button></form></dialog>
+<dialog id="lab"><div class="no-print section-heading"><h2>Xem trước phiếu Lab</h2><div><button id="print">In / Lưu PDF</button> <button id="close-lab" class="quiet">Đóng</button></div></div><div id="sheet"></div></dialog>
+</body></html>
