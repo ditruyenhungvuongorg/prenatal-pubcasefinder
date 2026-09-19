@@ -10,12 +10,13 @@ from urllib.parse import urlparse, parse_qs
 from web_service import WebSystem
 
 ROOT = Path(__file__).resolve().parent
+STATIC_ROOT = ROOT / 'static' if (ROOT / 'static').is_dir() else ROOT.parent / 'docs'
 SYSTEM = WebSystem()
 WORK = BoundedSemaphore(1)
 
 class Handler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, directory=str(ROOT / 'static'), **kwargs)
+        super().__init__(*args, directory=str(STATIC_ROOT), **kwargs)
 
     def setup(self):
         super().setup()
@@ -26,7 +27,8 @@ class Handler(SimpleHTTPRequestHandler):
 
     def allowed_origin(self):
         origin = self.headers.get('Origin')
-        return not origin or origin in os.getenv('WEB_ALLOWED_ORIGINS', '').split(',') or origin == 'http://' + self.headers.get('Host', '')
+        host = self.headers.get('Host', '')
+        return not origin or origin in os.getenv('WEB_ALLOWED_ORIGINS', '').split(',') or origin in ('http://' + host, 'https://' + host)
 
     def end_headers(self):
         origin = self.headers.get('Origin')

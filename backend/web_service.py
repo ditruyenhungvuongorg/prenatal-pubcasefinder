@@ -5,6 +5,7 @@ import re
 from collections import defaultdict
 from server import PubCaseFinderSystem, normalize_text, BASE_DIR
 from hpo_agents.agent2_schema import PhenotypeObservation, PhenotypeStatus, RankingStrategy
+from hpo_agents.agent3_prenatal_recommender import PRENATAL_SYNDROME_CATALOG
 from model1_v38_package.model1_runner import Model1V38Runner
 
 STATUS = {'CÓ': PhenotypeStatus.PRESENT, 'NGHI NGỜ': PhenotypeStatus.SUSPECTED, 'KHÔNG': PhenotypeStatus.ABSENT}
@@ -131,15 +132,18 @@ class WebSystem(PubCaseFinderSystem):
                     matched.append({**self.term(ev.matched_hpo_id), 'relation': ev.relation, 'observed_id': ev.observed_hpo_id})
             remaining = [self.term(h) for h, f in sorted(profile.positive_frequencies.items(), key=lambda p: (-p[1], p[0]))
                          if h not in seen | mids and h != 'HP:0000118']
-            rec = recommendations.get(c.disease_id)
+            # The legacy recommender also matches generic name tokens such as
+            # "syndrome". Only exact catalog IDs may supply disease-specific text.
+            exact_profile = next((p for p in PRENATAL_SYNDROME_CATALOG.values()
+                                  if p.canonical_id == c.disease_id), None)
             output.append({'rank': rank, 'disease_id': c.disease_id, 'disease_name': c.disease_name,
                 'match_percentage': round(max(0, min(1, c.ic_weighted_coverage)) * 100, 1),
                 'matched_phenotypes': matched,
                 'inheritance_modes': [self.labels.get(h, h) for h in sorted(self.inheritance[c.disease_id])],
                 'causative_genes': self.disease_to_genes.get(c.disease_id, []),
                 'clinical_features_to_check': remaining,
-                'model3_rationale': rec.clinical_rationale if rec else '',
-                'model3_recommended_tests': rec.recommended_tests if rec else '',
+                'model3_rationale': ('Hồ sơ gợi ý khớp mã bệnh ' + c.disease_id) if exact_profile else '',
+                'model3_recommended_tests': (exact_profile.recommended_first_tier + '. ' + exact_profile.recommended_second_tier) if exact_profile else '',
                 'negative_conflict': c.negative_conflict})
         return {'candidates': output, 'clinical_pattern': report.clinical_pattern,
                 'score_semantics': 'IC-weighted phenotype similarity; not disease probability', 'observations': hpos}

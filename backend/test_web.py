@@ -28,6 +28,9 @@ class WebTests(unittest.TestCase):
         self.assertEqual(len(result['candidates']), 20)
         self.assertTrue(any(c['inheritance_modes'] for c in result['candidates']))
         for c in result['candidates']:
+            if c['disease_id'] == 'OMIM:109400':
+                self.assertEqual(c['model3_recommended_tests'], '')
+        for c in result['candidates']:
             self.assertTrue(0 <= c['match_percentage'] <= 100)
             self.assertTrue(all(p['relation'] not in ('no_match', 'ignored') for p in c['matched_phenotypes']))
             self.assertNotIn('HP:0009729', {p['id'] for p in c['clinical_features_to_check']})
