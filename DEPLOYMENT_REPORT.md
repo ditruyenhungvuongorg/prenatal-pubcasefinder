@@ -67,3 +67,22 @@ systemctl --user start prenatal-web
 web.env; restart prenatal-web; kiểm tra trích đoạn văn và xếp hạng. Nếu lỗi, trả lại
 đường dẫn cũ rồi restart. Không sửa đè trọng số đang được dịch vụ sử dụng.
 
+
+## Cập nhật giao diện và đồng bộ HPO — 20/09/2026
+
+- Bố cục một cột: thông tin ca, nhập dấu hiệu, HPO đã chọn, kết quả, phiếu Lab.
+- Font Be Vietnam Pro tự phục vụ (Regular/SemiBold); giấy phép SIL OFL kèm trong docs/fonts.
+- Hai cách nhập dùng chung CaseSelection: chống trùng ID, giữ trạng thái bác sĩ chọn,
+  ghi nguồn nhập, xử lý mâu thuẫn trước khi duyệt. Tách lại không xóa HPO đã chọn.
+- Hủy/bỏ phản hồi tìm kiếm cũ; bỏ phản hồi trích đoạn văn đã sửa; kết quả đối chiếu
+  không còn hiệu lực sau thay đổi ca. Đổi máy chủ không chuyển mã truy cập cũ sang địa chỉ mới.
+- Kiểm thử: 7/7 Node state tests; 5/5 backend unittest.
+- Trình duyệt qua proxy QA cục bộ tới HTTPS Ubuntu thật: tìm HP:0000252, trích
+  "Thai nghi ngờ đầu nhỏ.", xử lý CÓ/NGHI NGỜ, giữ quyết định khi trích lại,
+  đồng bộ thay đổi trạng thái sang tìm kiếm, xóa HPO, sửa văn bản, đối chiếu 20 bệnh,
+  xem trước phiếu Lab đúng trạng thái. Không thấy console error.
+- Kiểm tra trực quan desktop và viewport 390x844: 5 phần cùng chiều rộng,
+  không tràn ngang, font tiếng Việt hiển thị đúng.
+- Giới hạn: đây là kiểm thử phần mềm, không phải thẩm định lâm sàng; chưa kiểm tra
+  bản PDF in thực tế. IAB trước đó chặn truy cập trực tiếp tên miền ts.net nên kiểm thử
+  luồng API trong UI qua proxy; kiểm tra HTTPS/CORS trực tiếp bằng HTTP client riêng.

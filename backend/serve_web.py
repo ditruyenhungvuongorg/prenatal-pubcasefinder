@@ -79,7 +79,7 @@ class Handler(SimpleHTTPRequestHandler):
             if path.path == '/api/hpo_search':
                 return self.send_json(SYSTEM.search_hpo(parse_qs(path.query).get('q', [''])[0][:200]))
             return self.send_json({'error': 'Không có endpoint này.'}, 404)
-        if path.path not in ('/', '/index.html', '/styles.css', '/app.js', '/config.js'):
+        if path.path not in ('/', '/index.html', '/styles.css', '/app.js', '/config.js', '/case-state.js', '/fonts/BeVietnamPro-Regular.ttf', '/fonts/BeVietnamPro-SemiBold.ttf', '/fonts/OFL.txt'):
             return self.send_error(404)
         super().do_GET()
 
