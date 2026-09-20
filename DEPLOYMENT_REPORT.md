@@ -1,8 +1,8 @@
 # Báo cáo triển khai và kiểm thử — 19/09/2026
 
 ## Địa chỉ
-- Web: https://ditruyenhungvuong.github.io/prenatal-pubcasefinder/
-- Repo: https://github.com/ditruyenhungvuong/prenatal-pubcasefinder
+- Web: https://ditruyenhungvuongorg.github.io/prenatal-pubcasefinder/
+- Repo: https://github.com/ditruyenhungvuongorg/prenatal-pubcasefinder
 - Backend Ubuntu: https://adminpc-system-product-name.taila6ff46.ts.net
 - Truy cập API cần mã riêng; mã không nằm trong GitHub, localStorage hoặc tài liệu công khai.
 

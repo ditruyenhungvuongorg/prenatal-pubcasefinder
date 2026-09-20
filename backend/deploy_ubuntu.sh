@@ -14,7 +14,7 @@ if [ ! -f "$ENV_FILE" ]; then
     "MODEL1_WORKER_DIR=$HOME/Downloads/model1_extract_ubuntu_v3_8" \
     'MODEL1_PRELOAD=1' 'CUDA_VISIBLE_DEVICES=0' 'PORT=8000' \
     "WEB_ACCESS_TOKEN=$WEB_TOKEN" \
-    'WEB_ALLOWED_ORIGINS=https://ditruyenhungvuong.github.io' \
+    'WEB_ALLOWED_ORIGINS=https://ditruyenhungvuongorg.github.io' \
     'PYTHONUNBUFFERED=1' > "$ENV_FILE"
 fi
 cat > "$HOME/.config/systemd/user/prenatal-web.service" <<EOF
